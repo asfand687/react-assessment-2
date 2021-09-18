@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+import Article from './Article';
+import './index.css'
 
-function App() {
+function App({articles}) {
+  const [flag, setFlag] = useState(true)
+  const sortedVotes = () => {
+    let res = articles.sort((a, b) => b.upvotes - a.upvotes)
+    return res
+  }
+  const sortedDate = () => {
+    let res = articles.sort((a, b) => {
+      let da = new Date(a.date),
+          db = new Date(b.date)
+      return db - da
+    })
+    return res
+  }
+  useEffect(() => {}, [flag])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="button-container">
+        <button onClick = {() => setFlag(true)} >Upvotes</button>
+        <button onClick={() => setFlag(false)}>Date</button>
+      </div>
+      <Article articles={flag ? sortedVotes() : sortedDate()} />
     </div>
   );
 }
